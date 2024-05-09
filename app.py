@@ -1,20 +1,26 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Thu May  9 09:23:59 2024
+
+@author: Mohan
+"""
+
 from flask import Flask, render_template, request, redirect, url_for, flash
 import sqlite3
 import os
 
 app = Flask(__name__)
 
-# Configuration for the Flask app
+# secret key 
 app.config['SECRET_KEY'] = 'your_secret_key_here'
 
-# Define the path to the database file
+# path to the database file
 DB_FILE = os.path.join(os.path.dirname(__file__), 'criminal_records.db')
 
-# Initialize global variables for connection and cursor
 connection = None
 cursor = None
 
-# Function to get the database connection
+# database connection
 def get_db():
     global connection, cursor
     if connection is None:
@@ -92,14 +98,14 @@ def update():
         state_of_crime = request.form['update_state']
         status = request.form['update_status']
         
-        # Check if the specified ID exists
+
         cursor.execute("SELECT * FROM records WHERE id=?", (criminal_id,))
         existing_record = cursor.fetchone()
         if existing_record is None:
             flash("Error: Criminal ID not found.", "error")
             return redirect(url_for('index'))
         
-        # Create the SET part of the SQL query dynamically based on the provided values
+        
         set_values = []
         bind_values = []
         if name:
@@ -124,16 +130,16 @@ def update():
             set_values.append("status=?")
             bind_values.append(status)
         
-        # Construct the SET clause for the SQL query
+        
         set_clause = ", ".join(set_values)
         
-        # Construct the SQL query
+        
         query = "UPDATE records SET {} WHERE id=?".format(set_clause)
         
-        # Execute the query and commit changes
+        
         try:
-            bind_values.append(criminal_id)  # Add criminal_id to the bind_values
-            cursor.execute(query, tuple(bind_values))  # Convert bind_values to tuple
+            bind_values.append(criminal_id)  
+            cursor.execute(query, tuple(bind_values))  
             connection.commit()
             flash("Criminal record updated successfully!", "success")
         except Exception as e:
@@ -152,7 +158,6 @@ def delete_criminal():
         query = f"DELETE FROM records WHERE {delete_by} LIKE ?"
         cursor.execute(query, ('%' + delete_input + '%',))
         
-        # Check if any records were deleted
         if cursor.rowcount == 0:
             flash("Error: No matching records found for deletion.", "error")
         else:
@@ -161,5 +166,4 @@ def delete_criminal():
         return redirect(url_for('index'))
     
 if __name__ == "__main__":
-    # Run the app if the script is executed directly
     app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))

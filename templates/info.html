@@ -204,16 +204,107 @@
     background-color:#26374c;
     border-color: #26374c;
   }
+  .slide-menu {
+    position: fixed;
+    top: 0;
+    left: -300px;
+    width: 250px;
+    height: 100%;
+    background-color: #ffffff;
+    padding: 20px;
+    transition: left 0.3s;
+    z-index: 2;
+}
+
+.login{
+    position: absolute;
+    max-width: 50px;
+    top: 10px;
+    right: 20px;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: .4s ease;
+  }
+.slide-menu ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.slide-menu ul li {
+    margin-bottom: 10px;
+}
+
+.slide-menu ul li a {
+    color: #26374c;
+    text-decoration: none;
+}
+
+.show-menu {
+    left: 0;
+}       
+.hidden {
+    display: none;
+  }
+.close-menu {
+      display: none;
+      font-size: 24px;
+      cursor: pointer;
+      position: absolute;
+      top: 20px;
+      right: 20px;
+  }
+
+  .show-menu .close-menu {
+      display: block; 
+  }
+  .message {
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    text-align: center;
+    font-weight: bold;
+  }
+  .message.success {
+    background-color: #d4edda;
+    color: #155724;
+  }
+  .message.danger {
+    background-color: #f8d7da;
+    color: #721c24;
+  }
+  .message.warning {
+    background-color: #fff3cd;
+    color: #856404;
+  }
+  .message.info {
+    background-color: #d1ecf1;
+    color: #0c5460;
+  }
 
 
 </style>
 </head>
 <body>
 
-<header>
-  <img src="{{ url_for('static', filename='logo.jpg') }}" alt="Logo" class="logo">
-<body>
-</header>
+  <header>
+    <img src="{{ url_for('static', filename='logo.jpg') }}" alt="Logo" class="logo" onclick="goToHome()">
+    <img src="{{ url_for('static', filename='account_icon3.png')}}" alt="login" class="login" onclick="goToProfile()">
+    <div class="menu-icon" onclick="toggleMenu()">
+      <div class="line"></div>
+      <div class="line"></div>
+      <div class="line"></div>
+    </div>
+    <nav class="slide-menu">
+      <span class="close-menu" onclick="toggleMenu()">&#10094;</span>
+      <ul>
+        <li><a href="{{ url_for('home_page') }}">Home</a></li>
+        <li><a href="{{ url_for('database') }}">Database</a></li>
+        <li><a href="{{ url_for('aboutus') }}">About</a></li>
+        <li><a href="{{ url_for('contact') }}">Contact Us</a></li>
+        <li><a href="{{ url_for('emergency') }}">SOS</a></li>
+      </ul>
+    </nav>
+  </header>
 <body>
 
     <div class="navigation">
@@ -415,8 +506,8 @@
     {% with messages = get_flashed_messages(with_categories=true) %}
       {% if messages %}
         {% for category, message in messages %}
-          <div class="alert alert-{{ category }}">
-            <h5>{{ message }}<h5>
+          <div class="message {{ category }}">
+            <h5> {{ message }}<h5>
           </div>
         {% endfor %}
       {% endif %}
@@ -436,6 +527,26 @@
         // Show the selected section
         document.getElementById(sectionId).classList.add('active');
       }
+
+      
+  function goToHome() {
+    window.location.href = "{{ url_for('home_page') }}";  // Redirect to the home page route
+  }
+  function goToProfile() {
+    window.location.href = "{{ url_for('profile') }}";  // Redirect to the home page route
+  }
+  function toggleMenu() {
+    var menu = document.querySelector('.slide-menu');
+    menu.classList.toggle('show-menu');
+  }
+  document.addEventListener('click', function(event) {
+    var menu = document.querySelector('.slide-menu');
+    var menuIcon = document.querySelector('.menu-icon');
+    if (!menu.contains(event.target) && !menuIcon.contains(event.target)) {
+      menu.classList.remove('show-menu');
+    }
+  });
+
     </script>
   </body>
 <footer class="footer">

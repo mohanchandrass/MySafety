@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, session
+from flask import Flask, render_template, request, redirect, url_for, flash, session, jsonify
 from werkzeug.serving import WSGIRequestHandler
 from werkzeug.security import generate_password_hash, check_password_hash
 import sqlite3
@@ -63,7 +63,7 @@ def database():
 @app.route('/aboutus')
 @login_required
 def aboutus():
-    return render_template('about_us.html')
+    return render_template('aboutus.html')
 
 @app.route('/contact')
 @login_required
@@ -120,7 +120,8 @@ def edit_profile():
     user = cursor.fetchone()
     
     if request.method == 'POST':
-        # Retrieve form data safely using request.form.get()
+        response = {'success': False, 'message': 'An error occurred.'}
+        
         new_username = request.form.get('new_username', '')
         new_email = request.form.get('new_email', '')
         current_password = request.form.get('current_password', '')
@@ -131,31 +132,35 @@ def edit_profile():
         try:
             cursor.execute("UPDATE users SET username=?, email=? WHERE id=?", (new_username, new_email, session['user_id']))
             connection.commit()
-            flash("Profile updated successfully!", "success")
+            response['message'] = "Profile updated successfully!"
+            response['success'] = True
+            
+            # Update session username if it has changed
+            if session['username'] != new_username:
+                session['username'] = new_username
         except Exception as e:
-            flash(f"An error occurred: {e}", "danger")
+            response['message'] = f"An error occurred: {e}"
         
         # Change password if new password fields are provided
         if current_password and new_password and new_password == confirm_password:
-            # Check if current password matches
             cursor.execute("SELECT * FROM users WHERE id=?", (session['user_id'],))
             user_data = cursor.fetchone()
             
             if user_data and check_password_hash(user_data[2], current_password):
-                # Hash the new password
                 hashed_password = generate_password_hash(new_password, method='sha256')
-                
-                # Update password in the database
                 try:
                     cursor.execute("UPDATE users SET password=? WHERE id=?", (hashed_password, session['user_id']))
                     connection.commit()
-                    flash("Password updated successfully!", "success")
+                    response['message'] += " Password updated successfully!"
+                    response['success'] = True
                 except Exception as e:
-                    flash(f"An error occurred: {e}", "danger")
+                    response['message'] += f" An error occurred: {e}"
             else:
-                flash("Invalid current password. Password not updated.", "danger")
+                response['message'] = "Invalid current password. Password not updated."
         elif new_password != confirm_password:
-            flash("New password and confirm password do not match. Password not updated.", "danger")
+            response['message'] = "New password and confirm password do not match. Password not updated."
+        
+        return jsonify(response)
     
     if user:
         user_data = {
@@ -166,6 +171,7 @@ def edit_profile():
     else:
         flash("User not found.", "danger")
         return redirect(url_for('home_page'))
+
 
 
 @app.route('/index')
@@ -264,6 +270,24 @@ def forgot_password():
             return redirect(url_for('forgot_password'))
 
     return render_template('forgot_password.html')
+
+form_data = []
+
+@app.route('/submit-form', methods=['POST'])
+def submit_form():
+    data = {
+        'first': request.form['first'],
+        'last': request.form['last'],
+        'email': request.form['email'],
+        'message': request.form['message']
+    }
+    form_data.append(data)
+    return redirect(url_for('display_data'))
+
+@app.route('/display-data')
+def display_data():
+    return render_template('display_data.html', form_data=form_data)
+
 
 @app.route('/add_criminal', methods=['POST'])
 @login_required
@@ -377,7 +401,6 @@ def delete_criminal():
         flash("Record deleted successfully!", "success")
     
     return redirect(url_for('index'))
-
 if __name__ == '__main__':
     # Use a single-threaded Flask server to avoid SQLite threading issues
     WSGIRequestHandler.protocol_version = "HTTP/1.1"

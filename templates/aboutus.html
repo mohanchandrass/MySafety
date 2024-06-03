@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - My Safety</title>
+    <!-- Link to Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        header {
+            overflow-x: auto; 
+            background-color: #233245;
+            color: #fff;
+            padding: 20px 0;
+            text-align: center;
+            position: relative;
+        }
+        .login {
+            position: absolute;
+            max-width: 50px;
+            top: 10px;
+            right: 20px;
+            cursor: pointer;
+            border: 1px solid transparent;
+            transition: .4s ease;
+        }
+        .login:hover {
+            border-color: #fff;
+        }
+        .logo {
+            max-width: 200px;
+            display: inline-block;
+            margin: 0 auto;
+        }
+        .menu-icon {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            cursor: pointer;
+            border: 1px solid transparent;
+            transition: .4s ease;
+        }
+        .menu-icon:hover {
+            border-color: #fff;
+        }
+        .menu-icon .line {
+            width: 30px;
+            height: 3px;
+            background-color: #fff;
+            margin: 5px 0;
+        }
+        .container {
+            flex: 1;
+            width:auto;
+            margin: 20px auto;
+            padding-bottom: auto;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.05);
+        }
+        h1 {
+            text-align: center;
+            color: #233245;
+            margin-top: 20px;
+            font-size: 36px;
+        }
+        p {
+            margin-bottom: 20px;
+        }
+        footer {
+            overflow-x: auto; 
+            background-color: #233245;
+            color: #fff;
+            text-align: center;
+            padding: 10px 0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            flex-shrink: 0;
+        }
+        .slide-menu {
+            position: fixed;
+            top: 0;
+            left: -300px;
+            width: 250px;
+            height: 100%;
+            background-color: #ffffff;
+            padding: 20px;
+            transition: left 0.3s;
+            z-index: 2;
+        }
+        .slide-menu ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .slide-menu ul li {
+            margin-bottom: 10px;
+        }
+        .slide-menu ul li a {
+            color: #26374c;
+            text-decoration: none;
+        }
+        .show-menu {
+            left: 0;
+        }
+        .hidden {
+            display: none;
+        }
+        .close-menu {
+            display: none;
+            font-size: 24px;
+            cursor: pointer;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+        .show-menu .close-menu {
+            display: block;
+        }
+        @media (max-width: 768px) {
+            .container {
+                width: calc(100% - 20px);
+                margin: 10px;
+                padding: 20px;
+            }
+            .menu-icon {
+                top: 10px;
+                left: 10px;
+            }
+            .login {
+                top: 10px;
+                right: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="{{ url_for('static', filename='logo.jpg') }}" alt="Logo" class="logo" onclick="goToHome()">
+        <img src="{{ url_for('static', filename='account_icon3.png')}}" alt="login" class="login" onclick="goToProfile()">
+        <div class="menu-icon" onclick="toggleMenu()">
+          <div class="line"></div>
+          <div class="line"></div>
+          <div class="line"></div>
+        </div>
+        <nav class="slide-menu">
+          <span class="close-menu" onclick="toggleMenu()">&#10094;</span>
+          <ul>
+            <li><a href="{{ url_for('home_page') }}">Home</a></li>
+            <li><a href="{{ url_for('database') }}">Database</a></li>
+            <li><a href="{{ url_for('aboutus') }}">About</a></li>
+            <li><a href="{{ url_for('contact') }}">Contact Us</a></li>
+            <li><a href="{{ url_for('emergency') }}">SOS</a></li>
+          </ul>
+        </nav>
+      </header>
+
+    <div class="container">
+        <h1>About Us</h1>
+        <p>At My Safety, we understand the paramount importance of security and peace of mind in today's world. With an ever-increasing focus on personal and community safety, we are dedicated to providing innovative solutions that empower individuals and organizations to safeguard their well-being.</p>
+
+        <p>Our mission at My Safety is simple yet profound: to enhance security and promote peace of mind for all. We believe that everyone deserves to feel safe, whether at home, work, or in public spaces. By leveraging cutting-edge technology and a deep commitment to excellence, we strive to make safety accessible and effortless for everyone.</p>
+
+        <p>At the core of our operations lie our values of integrity, customer-centricity, innovation, accountability, and transparency. These values guide every decision we make and every action we take, ensuring that we consistently deliver exceptional service and exceed our customers' expectations.</p>
+
+        <p>With a team of experts in safety and security, we bring a wealth of knowledge and experience to the table. Our team members are dedicated professionals with backgrounds in various fields, including law enforcement, technology, and risk management. Together, we work tirelessly to develop and maintain solutions that address the evolving safety needs of our users.</p>
+
+        <p>At My Safety, we offer a range of features and functionalities designed to meet the diverse safety requirements of individuals and communities. From real-time location tracking to emergency alerts and community-based reporting, our platform is equipped with the tools needed to enhance security and provide peace of mind.</p>
+
+        <p>Privacy and security are paramount concerns for us at My Safety. We are committed to protecting the privacy and data security of our users at all times. We employ robust security measures and adhere to stringent privacy policies to ensure that user information remains safe and confidential.</p>
+
+        <p>Don't just take our word for it—hear what our satisfied users have to say! Our platform has garnered praise from individuals and organizations alike for its effectiveness, reliability, and ease of use. Join the My Safety community today and experience the difference for yourself.</p>
+
+        <p>For inquiries, feedback, or support, please don't hesitate to get in touch with us. Our dedicated team is here to assist you every step of the way. Connect with us via phone, email, or social media—we're always here to help.</p>
+
+        <p>Thank you for choosing My Safety. Together, let's create a safer and more secure world for all.</p>
+    </div>
+
+    <footer>
+        &copy; 2024 MySafety. All rights reserved.
+    </footer>
+
+    <script>
+        function toggleMenu() {
+            var menu = document.querySelector('.slide-menu');
+            menu.classList.toggle('show-menu');
+        }
+
+        document.addEventListener('click', function(event) {
+            var menu = document.querySelector('.slide-menu');
+            var menuIcon = document.querySelector('.menu-icon');
+            if (!menu.contains(event.target) && !menuIcon.contains(event.target) && !event.target.classList.contains('close-menu')) {
+                menu.classList.remove('show-menu');
+            }
+        });
+
+        function goToHome() {
+            // Replace with the actual URL or route for the home page
+            window.location.href = "#";
+        }
+
+        function goToProfile() {
+            // Replace with the actual URL or route for the profile page
+            window.location.href = "#";
+        }
+    </script>
+</body>
+</html>

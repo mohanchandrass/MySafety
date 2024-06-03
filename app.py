@@ -381,5 +381,4 @@ def delete_criminal():
 if __name__ == '__main__':
     # Use a single-threaded Flask server to avoid SQLite threading issues
     WSGIRequestHandler.protocol_version = "HTTP/1.1"
-    app.run(debug=True, threaded=False, port=int(os.environ.get("PORT", 5000))))  
-
+    app.run(debug=True, threaded=False, port=int(os.environ.get("PORT", 5000)))

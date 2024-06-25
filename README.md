@@ -1,4 +1,4 @@
 # MySafety
 MySafety - Criminal Database Management
-\n
+<br>
 visit the website - (http://mysafety.pythonanywhere.com/)

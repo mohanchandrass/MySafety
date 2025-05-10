@@ -177,8 +177,7 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 ## 📬 Contact
 
-For any inquiries or issues with the project, feel free to contact me via email:  
-**mohanchandrass@example.com**
+For any inquiries or issues with the project, feel free to contact me via github:  
 
 ---
 
